@@ -1,0 +1,40 @@
+# ===================================================================
+# Stage 1: Build Java 17 Spring Boot application with Maven
+# ===================================================================
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+WORKDIR /build
+
+# Cache dependency layer for faster builds
+COPY pom.xml .
+RUN mvn dependency:go-offline -B || true
+
+# Copy source code and build production executable JAR
+COPY src ./src
+RUN mvn clean package -DskipTests -B
+
+# ===================================================================
+# Stage 2: Minimal Java 17 JRE runtime
+# ===================================================================
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# Create unprivileged application user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Create directory for room image uploads
+RUN mkdir -p uploads/rooms && chown -R appuser:appgroup /app
+
+# Copy packaged JAR from builder stage
+COPY --from=builder /build/target/interiorai-backend-1.0.0.jar app.jar
+RUN chown appuser:appgroup app.jar
+
+USER appuser
+
+# Set runtime defaults; PORT will be injected by Vercel/Cloud environment
+ENV PORT=8080 \
+    JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC"
+
+EXPOSE 8080
+
+# Launch application reading dynamic PORT
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT} -jar app.jar"]
