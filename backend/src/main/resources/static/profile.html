@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile & Account — InteriorAI</title>
+  <meta name="description" content="Manage your InteriorAI account details, contact information, and security preferences.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+          <li><a href="bookings.html" class="nav-link" id="nav-bookings">Bookings</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 50px 24px; max-width: 680px;">
+    <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+      <span class="section-tag">Account Settings</span>
+      <h1 class="section-title">My Profile</h1>
+      <p class="section-desc">Manage your account information and preferences.</p>
+    </div>
+
+    <div class="card" style="padding: 36px; margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding-bottom: 24px; border-bottom: 1px solid var(--border-light);">
+        <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--accent-sage-light); color: var(--accent-sage); font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center;" id="avatar-initials">
+          AI
+        </div>
+        <div>
+          <h2 style="font-size: 1.4rem; margin-bottom: 4px;" id="profile-display-name">Loading...</h2>
+          <div style="font-size: 0.88rem; color: var(--text-muted);" id="profile-display-email">name@example.com</div>
+        </div>
+      </div>
+
+      <form id="profile-form">
+        <div class="form-group">
+          <label class="form-label" for="profile_name">Full Name *</label>
+          <input type="text" id="profile_name" class="form-control" required minlength="2" maxlength="100">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profile_email">Email Address (Read-only)</label>
+          <input type="email" id="profile_email" class="form-control" disabled style="background: var(--bg-secondary); cursor: not-allowed;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="profile_mobile">Mobile Number</label>
+          <input type="tel" id="profile_mobile" class="form-control" placeholder="+91 98765 43210">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Member Since</label>
+          <input type="text" id="profile_created_at" class="form-control" disabled style="background: var(--bg-secondary); cursor: not-allowed;">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px;">
+          <button type="submit" class="btn btn-primary" id="btn-save-profile">
+            Save Changes
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="Auth.logout()">
+            Log Out
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    async function loadProfile() {
+      if (!Auth.requireAuth()) return;
+
+      try {
+        const res = await API.get('/auth/me');
+        const user = res.data;
+
+        document.getElementById('profile-display-name').textContent = user.fullName;
+        document.getElementById('profile-display-email').textContent = user.email;
+        document.getElementById('profile_name').value = user.fullName;
+        document.getElementById('profile_email').value = user.email;
+        document.getElementById('profile_mobile').value = user.mobile || '';
+        document.getElementById('profile_created_at').value = formatDate(user.createdAt);
+
+        const initials = user.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        document.getElementById('avatar-initials').textContent = initials || 'AI';
+
+        // Update local session cache
+        Auth.setSession(Auth.getToken(), user);
+
+      } catch (err) {
+        showToast(err.message || 'Could not load profile.', 'error');
+      }
+    }
+
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-save-profile');
+      btn.disabled = true;
+
+      try {
+        const payload = {
+          fullName: document.getElementById('profile_name').value.trim(),
+          mobile: document.getElementById('profile_mobile').value.trim()
+        };
+
+        const res = await API.put('/auth/profile', payload);
+        showToast('Profile updated successfully!', 'success');
+        loadProfile();
+      } catch (err) {
+        showToast(err.message || 'Failed to update profile.', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProfile();
+    });
+  </script>
+</body>
+</html>

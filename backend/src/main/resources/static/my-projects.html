@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Renovation Projects — InteriorAI</title>
+  <meta name="description" content="Manage and track your active home renovation projects, progress percentages, target dates, and trade milestones.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .project-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link active" id="nav-my-projects">My Projects</a></li>
+          <li><a href="bookings.html" class="nav-link" id="nav-bookings">Bookings</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 50px 24px; max-width: 1040px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 30px;">
+      <div>
+        <span class="section-tag">Renovation Management</span>
+        <h1 style="font-size: 2rem;">My Renovation Projects</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Track execution timelines, progress milestones, and design blueprints.
+        </p>
+      </div>
+
+      <a href="design.html" class="btn btn-primary">
+        + Start New Room Project
+      </a>
+    </div>
+
+    <!-- Filter Pills -->
+    <div style="display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap;" id="status-filters">
+      <button class="btn btn-secondary btn-sm active" data-status="all" onclick="filterStatus('all')">All Projects</button>
+      <button class="btn btn-secondary btn-sm" data-status="PLANNING" onclick="filterStatus('PLANNING')">Planning</button>
+      <button class="btn btn-secondary btn-sm" data-status="IN_PROGRESS" onclick="filterStatus('IN_PROGRESS')">In Progress</button>
+      <button class="btn btn-secondary btn-sm" data-status="COMPLETED" onclick="filterStatus('COMPLETED')">Completed</button>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="project-grid" id="projects-grid">
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+        Loading your projects...
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" style="display: none; text-align: center; padding: 60px 20px; background: #FFFFFF; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+      <div style="font-size: 3rem; margin-bottom: 12px;">📐</div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 8px;">No Projects Found</h3>
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px; max-width: 440px; margin-left: auto; margin-right: auto;">
+        You haven't created any renovation projects yet. Generate an AI design and save it as a project to track progress.
+      </p>
+      <a href="design.html" class="btn btn-primary">Create Your First Room Project</a>
+    </div>
+
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    let allProjects = [];
+    let currentFilter = 'all';
+
+    async function loadProjects() {
+      if (!Auth.requireAuth()) return;
+
+      const grid = document.getElementById('projects-grid');
+      const emptyState = document.getElementById('empty-state');
+
+      try {
+        const res = await API.get('/projects');
+        allProjects = res.data || [];
+        renderProjects();
+      } catch (err) {
+        grid.innerHTML = `<div style="grid-column: 1 / -1; color: var(--status-danger); text-align: center; padding: 40px;">Failed to load projects: ${err.message}</div>`;
+      }
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projects-grid');
+      const emptyState = document.getElementById('empty-state');
+
+      let filtered = allProjects;
+      if (currentFilter !== 'all') {
+        filtered = allProjects.filter(p => p.status === currentFilter);
+      }
+
+      grid.innerHTML = '';
+      if (filtered.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.cssText = 'display: flex; flex-direction: column; padding: 24px;';
+
+        let badgeClass = 'badge-info';
+        if (p.status === 'COMPLETED') badgeClass = 'badge-success';
+        if (p.status === 'IN_PROGRESS') badgeClass = 'badge-warning';
+        if (p.status === 'ON_HOLD') badgeClass = 'badge-danger';
+
+        const designImg = p.design ? API.getAssetUrl(p.design.imageUrl) : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80';
+
+        card.innerHTML = `
+          <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+            <img src="${designImg}" style="width: 80px; height: 80px; border-radius: var(--radius-sm); object-fit: cover;">
+            <div style="flex-grow: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                <h3 style="font-size: 1.15rem; margin-bottom: 0;">${p.projectName}</h3>
+                <span class="badge ${badgeClass}">${p.status}</span>
+              </div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px;">
+                ${p.room ? p.room.roomType : 'Room'} • ${p.room ? (p.room.lengthM * p.room.widthM).toFixed(1) + ' sq.m' : ''}
+              </div>
+              ${p.design ? `<div style="font-size: 0.8rem; color: var(--accent-sage); font-weight: 600;">Style: ${p.design.interiorStyle}</div>` : ''}
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">
+              <span>Progress</span>
+              <span>${p.progressPercentage || 0}%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: ${p.progressPercentage || 0}%;"></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">
+            <span>Started: ${formatDate(p.startDate)}</span>
+            <span>Target: ${formatDate(p.targetEndDate)}</span>
+          </div>
+
+          <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+            <a href="project-details.html?projectId=${p.projectId}" class="btn btn-primary btn-sm btn-block">
+              Open Progress Tracker &rarr;
+            </a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterStatus(status) {
+      currentFilter = status;
+      document.querySelectorAll('#status-filters button').forEach(b => {
+        if (b.getAttribute('data-status') === status) {
+          b.className = 'btn btn-primary btn-sm';
+        } else {
+          b.className = 'btn btn-secondary btn-sm';
+        }
+      });
+      renderProjects();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProjects();
+    });
+  </script>
+</body>
+</html>

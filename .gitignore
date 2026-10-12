@@ -1,0 +1,50 @@
+# Compiled class files & build directories
+**/target/
+target/
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+
+# IDE & Editor files
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Uploaded room photographs & temporary files
+uploads/
+**/uploads/rooms/*
+!uploads/rooms/.gitkeep
+target/test-uploads/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Secrets & environment configurations
+.env
+.env.local
+*.private
+# Additional security
+.env.*
+!.env.example
+
+# Dependencies and build files
+node_modules/
+target/
+.vercel/
+*.log

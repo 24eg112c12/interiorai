@@ -1,0 +1,19 @@
+{
+  "name": "interiorai",
+  "version": "1.0.0",
+  "description": "AI-Powered Interior Designing and Renovation Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node -e \"console.log('Frontend assets ready')\""
+  },
+  "keywords": [
+    "interior-design",
+    "ai",
+    "spring-boot",
+    "full-stack"
+  ],
+  "author": "InteriorAI Team",
+  "license": "MIT"
+}

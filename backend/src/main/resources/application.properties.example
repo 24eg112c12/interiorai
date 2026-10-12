@@ -1,0 +1,45 @@
+# ===================================================================
+# InteriorAI - application.properties.example
+# Copy this file to application.properties and configure your credentials.
+# ===================================================================
+
+spring.application.name=interiorai-backend
+server.port=8080
+
+# Database Configuration (MySQL 8.0+)
+# Create database beforehand: CREATE DATABASE interiorai_db;
+spring.datasource.url=jdbc:mysql://localhost:3306/interiorai_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+spring.datasource.username=YOUR_MYSQL_USERNAME
+spring.datasource.password=YOUR_MYSQL_PASSWORD
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.defer-datasource-initialization=true
+
+# SQL Initialization
+spring.sql.init.mode=always
+spring.sql.init.continue-on-error=true
+
+# Upload Limits
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=12MB
+interiorai.upload.dir=uploads/rooms
+
+# JWT Authentication
+# Generate a strong 256-bit secret key for production
+interiorai.jwt.secret=YOUR_BASE64_OR_HEX_256BIT_SECRET_KEY
+interiorai.jwt.expiration-ms=86400000
+
+# AI Image Generation API (e.g., OpenAI DALL-E 3 or compatible)
+# Leave blank to run in Demo Fallback Mode
+interiorai.ai.api-key=YOUR_OPENAI_OR_STABILITY_API_KEY
+interiorai.ai.api-url=https://api.openai.com/v1/images/generations
+interiorai.ai.demo-mode=true
+interiorai.ai.model=dall-e-3
+
+interiorai.cors.allowed-origins=http://localhost:3000,http://localhost:5500,http://127.0.0.1:5500,http://localhost:8080

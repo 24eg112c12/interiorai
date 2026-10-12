@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Details & Progress — InteriorAI</title>
+  <meta name="description" content="Track your room renovation milestones, update completion percentage, and manage professional trade bookings.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .project-detail-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 900px) {
+      .project-detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link active" id="nav-my-projects">My Projects</a></li>
+          <li><a href="bookings.html" class="nav-link" id="nav-bookings">Bookings</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 24px; max-width: 1040px;">
+    <a href="my-projects.html" style="font-size: 0.88rem; color: var(--accent-sage); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px;">
+      &larr; Back to All Projects
+    </a>
+
+    <!-- Top Header -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 30px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+          <h1 style="font-size: 2.1rem; margin-bottom: 0;" id="project-title">Project Details</h1>
+          <span class="badge badge-info" id="project-status-badge">Planning</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.95rem;" id="project-meta-desc">
+          Created renovation project.
+        </p>
+      </div>
+
+      <a href="professionals.html" class="btn btn-primary" id="btn-book-for-project">
+        🔨 Book Professional for Project
+      </a>
+    </div>
+
+    <div class="project-detail-grid">
+
+      <!-- Left Column: Progress Management & Milestones -->
+      <div>
+        <!-- Live Progress Card -->
+        <div class="card" style="padding: 32px; margin-bottom: 24px;">
+          <h2 style="font-size: 1.35rem; margin-bottom: 12px;">Renovation Progress</h2>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <span style="font-size: 0.9rem; color: var(--text-muted);">Current Completion Status</span>
+            <span style="font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--accent-sage);" id="progress-val-text">
+              0%
+            </span>
+          </div>
+
+          <div class="progress-container" style="height: 14px; margin-bottom: 24px;">
+            <div class="progress-bar" id="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+
+          <!-- Update Progress Form -->
+          <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 20px;">
+            <h4 style="font-size: 1rem; margin-bottom: 14px;">Update Progress & Status</h4>
+            <div class="form-row" style="margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="update-percentage">Progress Percentage (0 - 100%)</label>
+                <input type="range" id="update-range" min="0" max="100" value="0" style="width: 100%; margin-bottom: 6px;" oninput="syncRange(this.value)">
+                <input type="number" id="update-percentage" class="form-control" min="0" max="100" value="0" oninput="syncNum(this.value)">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="update-status">Project Status</label>
+                <select id="update-status" class="form-select">
+                  <option value="PLANNING">Planning</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="ON_HOLD">On Hold</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="CANCELLED">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-block" id="btn-save-progress">
+              Save Progress Update
+            </button>
+          </div>
+        </div>
+
+        <!-- Renovation Timeline Dates -->
+        <div class="card" style="padding: 28px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Timeline & Schedule</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: var(--radius-sm);">
+              <span style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase;">Start Date</span>
+              <div style="font-weight: 700; font-size: 1.05rem;" id="date-start">N/A</div>
+            </div>
+
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: var(--radius-sm);">
+              <span style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase;">Target Completion</span>
+              <div style="font-weight: 700; font-size: 1.05rem; color: var(--accent-sage-dark);" id="date-target">N/A</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Associated Room & Design Blueprint -->
+      <div>
+        <div class="card" style="padding: 28px; margin-bottom: 24px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Design Blueprint</h3>
+
+          <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 16px; border: 1px solid var(--border-light);">
+            <img id="design-img-preview" src="" alt="Project Design Preview" style="width: 100%; height: 220px; object-fit: cover;">
+          </div>
+
+          <h4 style="font-size: 1.1rem; margin-bottom: 4px;" id="design-name-text">Design Concept</h4>
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;" id="design-style-text">
+            Style: Modern
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <a href="#" id="link-view-full-design" class="btn btn-secondary btn-sm btn-block">
+              View Design & Cost Estimate &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Room Specifications -->
+        <div class="card" style="padding: 28px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Room Details</h3>
+          <div style="font-size: 0.9rem; line-height: 1.8;">
+            <div><strong>Room Type:</strong> <span id="room-type-text">Bedroom</span></div>
+            <div><strong>Dimensions:</strong> <span id="room-dimensions-text">4.5m &times; 3.5m</span></div>
+            <div><strong>Ceiling Height:</strong> <span id="room-ceiling-text">2.9m</span></div>
+            <div><strong>Existing Furniture:</strong> <span id="room-furniture-text">None</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    let projectId = null;
+    let currentProject = null;
+
+    function syncRange(val) {
+      document.getElementById('update-percentage').value = val;
+    }
+
+    function syncNum(val) {
+      document.getElementById('update-range').value = val;
+    }
+
+    async function loadProjectDetails() {
+      if (!Auth.requireAuth()) return;
+
+      const params = new URLSearchParams(window.location.search);
+      projectId = params.get('projectId');
+
+      if (!projectId) {
+        showToast('No project specified.', 'error');
+        setTimeout(() => window.location.href = 'my-projects.html', 1000);
+        return;
+      }
+
+      try {
+        const res = await API.get(`/projects/${projectId}`);
+        currentProject = res.data;
+
+        document.getElementById('project-title').textContent = currentProject.projectName;
+        document.getElementById('project-meta-desc').textContent = `Tracking room makeover created on ${formatDate(currentProject.createdAt)}.`;
+
+        const badge = document.getElementById('project-status-badge');
+        badge.textContent = currentProject.status;
+        if (currentProject.status === 'COMPLETED') badge.className = 'badge badge-success';
+        else if (currentProject.status === 'IN_PROGRESS') badge.className = 'badge badge-warning';
+        else badge.className = 'badge badge-info';
+
+        // Progress
+        const progress = currentProject.progressPercentage || 0;
+        document.getElementById('progress-val-text').textContent = progress + '%';
+        document.getElementById('progress-bar-fill').style.width = progress + '%';
+        document.getElementById('update-range').value = progress;
+        document.getElementById('update-percentage').value = progress;
+        document.getElementById('update-status').value = currentProject.status;
+
+        // Dates
+        document.getElementById('date-start').textContent = formatDate(currentProject.startDate);
+        document.getElementById('date-target').textContent = formatDate(currentProject.targetEndDate);
+
+        // Design Preview
+        if (currentProject.design) {
+          document.getElementById('design-img-preview').src = API.getAssetUrl(currentProject.design.imageUrl);
+          document.getElementById('design-name-text').textContent = currentProject.design.designName;
+          document.getElementById('design-style-text').textContent = `Style: ${currentProject.design.interiorStyle}`;
+          document.getElementById('link-view-full-design').href = `design-results.html?designId=${currentProject.design.designId}`;
+        } else {
+          document.getElementById('design-img-preview').src = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80';
+          document.getElementById('link-view-full-design').style.display = 'none';
+        }
+
+        // Room details
+        if (currentProject.room) {
+          const r = currentProject.room;
+          document.getElementById('room-type-text').textContent = r.roomType;
+          document.getElementById('room-dimensions-text').textContent = `${r.lengthM}m × ${r.widthM}m (${(r.lengthM * r.widthM).toFixed(1)} sq.m)`;
+          document.getElementById('room-ceiling-text').textContent = (r.ceilingHeightM ? r.ceilingHeightM + 'm' : 'Standard 2.9m');
+          document.getElementById('room-furniture-text').textContent = r.existingFurniture || 'None specified';
+        }
+
+      } catch (err) {
+        showToast(err.message || 'Could not load project details.', 'error');
+      }
+    }
+
+    document.getElementById('btn-save-progress').addEventListener('click', async () => {
+      const percentage = parseInt(document.getElementById('update-percentage').value) || 0;
+      const status = document.getElementById('update-status').value;
+
+      try {
+        const res = await API.patch(`/projects/${projectId}/progress`, {
+          progressPercentage: percentage,
+          status: status
+        });
+
+        showToast('Project progress updated!', 'success');
+        loadProjectDetails();
+      } catch (err) {
+        showToast(err.message || 'Failed to update progress.', 'error');
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProjectDetails();
+    });
+  </script>
+</body>
+</html>

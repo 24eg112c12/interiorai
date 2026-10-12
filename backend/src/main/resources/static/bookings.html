@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings — InteriorAI</title>
+  <meta name="description" content="Manage your home renovation professional bookings, view status updates, and track schedules.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .booking-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      transition: all 0.2s ease;
+    }
+    .booking-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #D3CABF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+          <li><a href="bookings.html" class="nav-link active" id="nav-bookings">Bookings</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 50px 24px; max-width: 1000px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 30px;">
+      <div>
+        <span class="section-tag">Appointments</span>
+        <h1 style="font-size: 2rem;">My Professional Bookings</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Track your consultation schedules and tradesman appointments.
+        </p>
+      </div>
+
+      <a href="professionals.html" class="btn btn-primary">
+        + Book Another Professional
+      </a>
+    </div>
+
+    <!-- Bookings List Container -->
+    <div id="bookings-list">
+      <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+        Loading your bookings...
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" style="display: none; text-align: center; padding: 60px 20px; background: #FFFFFF; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+      <div style="font-size: 3rem; margin-bottom: 12px;">📅</div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 8px;">No Bookings Yet</h3>
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px; max-width: 440px; margin-left: auto; margin-right: auto;">
+        You haven't booked any home renovation professionals yet. Explore our directory of painters, carpenters, and interior designers.
+      </p>
+      <a href="professionals.html" class="btn btn-primary">Browse Professionals Directory</a>
+    </div>
+
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    async function loadBookings() {
+      if (!Auth.requireAuth()) return;
+
+      const listContainer = document.getElementById('bookings-list');
+      const emptyState = document.getElementById('empty-state');
+
+      try {
+        const res = await API.get('/bookings/my');
+        const bookings = res.data || [];
+
+        listContainer.innerHTML = '';
+
+        if (bookings.length === 0) {
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        emptyState.style.display = 'none';
+
+        bookings.forEach(b => {
+          const card = document.createElement('div');
+          card.className = 'booking-card';
+
+          let statusBadgeClass = 'badge-warning';
+          if (b.status === 'ACCEPTED') statusBadgeClass = 'badge-success';
+          if (b.status === 'COMPLETED') statusBadgeClass = 'badge-info';
+          if (b.status === 'CANCELLED' || b.status === 'REJECTED') statusBadgeClass = 'badge-danger';
+
+          card.innerHTML = `
+            <div style="display: flex; gap: 20px; align-items: center;">
+              <img src="${b.professional.portfolioImageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'}" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-light);">
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                  <h3 style="font-size: 1.15rem; margin-bottom: 0;">${b.professional.name}</h3>
+                  <span class="badge ${statusBadgeClass}">${b.status}</span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--accent-sage); font-weight: 600; margin-bottom: 4px;">
+                  ${b.professional.serviceType} • 📍 ${b.professional.location}
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                  <strong>Date:</strong> ${formatDate(b.bookingDate)}
+                  ${b.project ? `• <strong>Project:</strong> ${b.project.projectName}` : ''}
+                </div>
+                ${b.message ? `<div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 6px; font-style: italic;">"${b.message}"</div>` : ''}
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <a href="professional-details.html?id=${b.professional.professionalId}" class="btn btn-secondary btn-sm">
+                View Professional
+              </a>
+              ${b.status === 'PENDING' ? `
+                <button type="button" class="btn btn-sm" style="background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2;" onclick="cancelBooking(${b.bookingId})">
+                  Cancel
+                </button>
+              ` : ''}
+            </div>
+          `;
+          listContainer.appendChild(card);
+        });
+
+      } catch (err) {
+        listContainer.innerHTML = `<div style="color: var(--status-danger); text-align: center; padding: 40px;">Failed to load bookings: ${err.message}</div>`;
+      }
+    }
+
+    async function cancelBooking(bookingId) {
+      if (!confirm('Are you sure you want to cancel this booking request?')) return;
+
+      try {
+        await API.put(`/bookings/${bookingId}/cancel`);
+        showToast('Booking cancelled.', 'info');
+        loadBookings();
+      } catch (err) {
+        showToast(err.message || 'Could not cancel booking.', 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadBookings();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Results & Cost Breakdown — InteriorAI</title>
+  <meta name="description" content="View your AI-generated interior design, interactive before-and-after room comparison slider, and itemized renovation cost estimate.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 36px;
+      margin-bottom: 40px;
+    }
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.92rem;
+    }
+    .cost-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: var(--bg-secondary);
+      border-bottom: 2px solid var(--border-light);
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .cost-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .cost-table tr:hover td {
+      background: rgba(250, 248, 245, 0.7);
+    }
+    @media (max-width: 992px) {
+      .results-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 24px;">
+
+    <!-- Top Action Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 28px;">
+      <div>
+        <a href="design.html" style="font-size: 0.88rem; color: var(--accent-sage); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+          &larr; Start New Design
+        </a>
+        <h1 style="font-size: 2rem;" id="design-title-heading">Room Transformation Results</h1>
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button type="button" class="btn btn-secondary" onclick="window.print()">
+          🖨️ Print / Export
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-save-project">
+          📁 Create Renovation Project
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Results Grid -->
+    <div class="results-grid">
+
+      <!-- Left Column: Visual Before/After Slider & Architectural Details -->
+      <div>
+        <div class="before-after-card" id="results-ba-slider" style="margin-bottom: 20px;">
+          <div class="ba-slider-container">
+            <img class="ba-img-after" id="img-after" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Generated Design">
+            <div class="ba-img-before-wrapper">
+              <img class="ba-img-before" id="img-before" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" alt="Original Room">
+            </div>
+            <div class="ba-handle">
+              <div class="ba-handle-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+            <span class="ba-badge ba-badge-before">Original Room</span>
+            <span class="ba-badge ba-badge-after">AI Transformed</span>
+          </div>
+        </div>
+
+        <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 24px;">
+          ↔ Drag slider handle horizontally to compare before and after views
+        </p>
+
+        <!-- Design Details Card -->
+        <div class="card" style="padding: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div>
+              <span class="badge badge-info" id="badge-style" style="margin-bottom: 8px;">Modern Style</span>
+              <h2 style="font-size: 1.4rem;" id="design-name">Modern Bedroom Concept</h2>
+            </div>
+            <span class="badge badge-success" id="badge-generation-status">Completed</span>
+          </div>
+
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;" id="design-description">
+            Loading architectural concept and specification...
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-top: 16px; border-top: 1px solid var(--border-light);">
+            <div>
+              <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase;">Room Type</span>
+              <div style="font-weight: 700; font-size: 0.95rem;" id="meta-room-type">Bedroom</div>
+            </div>
+            <div>
+              <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase;">Floor Area</span>
+              <div style="font-weight: 700; font-size: 0.95rem;" id="meta-area">15.75 sq.m</div>
+            </div>
+            <div>
+              <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase;">Color Palette</span>
+              <div style="font-weight: 700; font-size: 0.95rem;" id="meta-palette">Warm Beige</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Budget Breakdown & Savings Guidance -->
+      <div>
+        <div class="card" style="padding: 28px; margin-bottom: 24px;">
+          <h3 style="font-size: 1.3rem; margin-bottom: 16px;">Estimated Cost Breakdown</h3>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: var(--radius-sm);">
+              <span style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Your Budget</span>
+              <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--text-main);" id="budget-user-total">
+                ₹75,000
+              </div>
+            </div>
+
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: var(--radius-sm);">
+              <span style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Estimated Total</span>
+              <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--accent-sage-dark);" id="budget-est-total">
+                ₹72,500
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Pill -->
+          <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.88rem; font-weight: 600;">Budget Feasibility:</span>
+            <span class="badge badge-success" id="badge-budget-status">Within Budget (Surplus ₹2,500)</span>
+          </div>
+
+          <!-- Itemized Table -->
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th style="text-align: right;">Estimated Cost</th>
+              </tr>
+            </thead>
+            <tbody id="cost-items-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+
+          <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 16px;">
+            * Estimates are indicative based on prevailing Indian metro materials and skilled labor rates.
+          </p>
+        </div>
+
+        <!-- Recommendations Card -->
+        <div class="card" style="padding: 28px;">
+          <h4 style="font-size: 1.15rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>💡</span> Cost-Saving & Material Guidance
+          </h4>
+          <ul style="list-style: none; padding-left: 0;" id="recommendations-list">
+            <!-- Dynamically populated -->
+          </ul>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.88rem; color: var(--text-muted);">Ready to start renovation?</span>
+            <a href="professionals.html" class="btn btn-outline btn-sm">Find Tradesmen &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Create Project Modal -->
+    <div id="project-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px;">
+      <div class="card" style="width: 100%; max-width: 500px; padding: 32px; position: relative;">
+        <button type="button" onclick="closeProjectModal()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        <h3 style="font-size: 1.35rem; margin-bottom: 8px;">Create Renovation Project</h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px;">
+          Save this design to your project portfolio to track milestones, target completion dates, and progress.
+        </p>
+
+        <form id="project-create-form">
+          <div class="form-group">
+            <label class="form-label" for="modal_project_name">Project Name *</label>
+            <input type="text" id="modal_project_name" class="form-control" value="Master Bedroom Redesign" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modal_target_date">Target Completion Date</label>
+            <input type="date" id="modal_target_date" class="form-control">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-project">
+            Save & Track Project
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    let currentDesign = null;
+    let currentRoom = null;
+
+    async function loadDesignData() {
+      const params = new URLSearchParams(window.location.search);
+      const designId = params.get('designId');
+
+      if (!designId) {
+        showToast('No design ID specified. Redirecting to studio...', 'warning');
+        setTimeout(() => window.location.href = 'design.html', 1200);
+        return;
+      }
+
+      try {
+        const res = await API.get(`/designs/${designId}`);
+        currentDesign = res.data;
+        currentRoom = currentDesign.room;
+
+        // Populate fields
+        document.getElementById('design-name').textContent = currentDesign.designName;
+        document.getElementById('design-title-heading').textContent = currentDesign.designName;
+        document.getElementById('design-description').textContent = currentDesign.description;
+        document.getElementById('badge-style').textContent = currentDesign.interiorStyle + ' Style';
+        document.getElementById('meta-room-type').textContent = currentRoom.roomType;
+        document.getElementById('meta-area').textContent = (currentRoom.lengthM * currentRoom.widthM).toFixed(2) + ' sq.m';
+        document.getElementById('meta-palette').textContent = currentDesign.colorPalette || 'Warm Beige & Charcoal';
+
+        // Images for before / after slider
+        const afterImg = document.getElementById('img-after');
+        const beforeImg = document.getElementById('img-before');
+
+        afterImg.src = API.getAssetUrl(currentDesign.imageUrl);
+        if (currentRoom.photoUrl) {
+          beforeImg.src = API.getAssetUrl(currentRoom.photoUrl);
+        } else {
+          beforeImg.src = 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80';
+        }
+
+        // Initialize slider
+        initBeforeAfterSlider(document.getElementById('results-ba-slider'));
+
+        // Load Budget
+        loadBudgetData(currentRoom.roomId, currentDesign.designId);
+
+      } catch (err) {
+        showToast(err.message || 'Could not load design details.', 'error');
+      }
+    }
+
+    async function loadBudgetData(roomId, designId) {
+      try {
+        const res = await API.get(`/rooms/${roomId}/budgets`);
+        const budgets = res.data;
+        const budget = budgets.find(b => b.design && b.design.designId === designId) || budgets[0];
+
+        if (budget) {
+          document.getElementById('budget-user-total').textContent = formatINR(budget.totalBudget);
+          document.getElementById('budget-est-total').textContent = formatINR(budget.estimatedCost);
+
+          const diff = Number(budget.totalBudget) - Number(budget.estimatedCost);
+          const statusBadge = document.getElementById('badge-budget-status');
+          if (diff < 0) {
+            statusBadge.className = 'badge badge-danger';
+            statusBadge.textContent = `Over Budget by ${formatINR(Math.abs(diff))}`;
+          } else {
+            statusBadge.className = 'badge badge-success';
+            statusBadge.textContent = `Within Budget (Surplus ${formatINR(diff)})`;
+          }
+
+          // Populate items table
+          const tbody = document.getElementById('cost-items-tbody');
+          tbody.innerHTML = '';
+
+          if (budget.items && budget.items.length > 0) {
+            budget.items.forEach(item => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>
+                  <strong>${item.category}</strong>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">${item.itemName || ''}</div>
+                </td>
+                <td style="text-align: right; font-weight: 700; color: var(--text-main);">
+                  ${formatINR(item.estimatedAmount)}
+                </td>
+              `;
+              tbody.appendChild(tr);
+            });
+          }
+
+          // Fetch Recommendations
+          const estRes = await API.post('/budgets/estimate', {
+            lengthM: currentRoom.lengthM,
+            widthM: currentRoom.widthM,
+            ceilingHeightM: currentRoom.ceilingHeightM,
+            roomType: currentRoom.roomType,
+            interiorStyle: currentDesign.interiorStyle,
+            totalBudget: budget.totalBudget
+          });
+
+          const recList = document.getElementById('recommendations-list');
+          recList.innerHTML = '';
+          if (estRes.data.recommendations && estRes.data.recommendations.length > 0) {
+            estRes.data.recommendations.forEach(rec => {
+              const li = document.createElement('li');
+              li.style.cssText = 'margin-bottom: 10px; font-size: 0.88rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px;';
+              li.innerHTML = `<span style="color: var(--accent-sage); font-weight: 800;">✓</span> ${rec}`;
+              recList.appendChild(li);
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load budget:', err);
+      }
+    }
+
+    // Modal Handling
+    const modal = document.getElementById('project-modal');
+    document.getElementById('btn-save-project').addEventListener('click', () => {
+      if (!Auth.requireAuth()) return;
+      if (currentDesign) {
+        document.getElementById('modal_project_name').value = `${currentDesign.designName} Renovation`;
+      }
+      modal.style.display = 'flex';
+    });
+
+    function closeProjectModal() {
+      modal.style.display = 'none';
+    }
+
+    document.getElementById('project-create-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!currentRoom || !currentDesign) return;
+
+      const submitBtn = document.getElementById('btn-submit-project');
+      submitBtn.disabled = true;
+
+      try {
+        const payload = {
+          roomId: currentRoom.roomId,
+          designId: currentDesign.designId,
+          projectName: document.getElementById('modal_project_name').value.trim(),
+          status: 'PLANNING',
+          targetEndDate: document.getElementById('modal_target_date').value || null,
+          progressPercentage: 0
+        };
+
+        const res = await API.post('/projects', payload);
+        showToast('Project created successfully! Redirecting to progress tracker...', 'success');
+        setTimeout(() => {
+          window.location.href = `project-details.html?projectId=${res.data.projectId}`;
+        }, 800);
+      } catch (err) {
+        showToast(err.message || 'Could not save project.', 'error');
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadDesignData();
+    });
+  </script>
+</body>
+</html>

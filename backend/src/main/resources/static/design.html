@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Room Redesign Studio — InteriorAI</title>
+  <meta name="description" content="Upload your room photo, specify dimensions, set your budget in rupees, and generate AI interior designs.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .step-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border-light);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+    .step-node {
+      position: relative;
+      z-index: 2;
+      background: #FFFFFF;
+      border: 2px solid var(--border-light);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+    .step-node.active {
+      border-color: var(--accent-sage);
+      background: var(--accent-sage);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 6px var(--accent-sage-light);
+    }
+    .step-node.completed {
+      border-color: var(--accent-sage);
+      background: var(--accent-sage);
+      color: #FFFFFF;
+    }
+    .step-content {
+      display: none;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .step-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link active">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 50px 24px; max-width: 900px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <span class="section-tag">Interactive Design Studio</span>
+      <h1 style="font-size: 2.2rem; margin-bottom: 10px;">Transform Your Room</h1>
+      <p style="color: var(--text-muted); font-size: 1.05rem;">
+        Follow four easy steps to upload, size, style, and budget your room makeover.
+      </p>
+    </div>
+
+    <!-- Stepper indicator -->
+    <div class="step-indicator">
+      <div class="step-node active" id="node-1">1</div>
+      <div class="step-node" id="node-2">2</div>
+      <div class="step-node" id="node-3">3</div>
+      <div class="step-node" id="node-4">4</div>
+    </div>
+
+    <div class="card" style="padding: 40px;">
+      
+      <!-- ================= STEP 1: Upload Photo ================= -->
+      <div class="step-content active" id="step-1">
+        <h2 style="font-size: 1.45rem; margin-bottom: 8px;">Step 1: Upload Your Room Photo</h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">
+          Select or drag a clear photograph of your current unfurnished or furnished space (JPEG, PNG, WebP up to 10 MB).
+        </p>
+
+        <div class="dropzone" id="photo-dropzone" onclick="document.getElementById('room-photo-input').click()">
+          <div class="dropzone-icon">📷</div>
+          <div class="dropzone-text">Click to browse or drag & drop room photo here</div>
+          <div class="dropzone-hint">Supports JPEG, PNG, WebP (Max file size: 10 MB)</div>
+          <input type="file" id="room-photo-input" accept="image/jpeg,image/png,image/webp" style="display: none;">
+        </div>
+
+        <div class="upload-preview" id="photo-preview-box">
+          <img id="photo-preview-img" src="" alt="Room Preview">
+          <button type="button" class="upload-preview-remove" id="btn-remove-photo" title="Remove Photo">&times;</button>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 32px;">
+          <button type="button" class="btn btn-primary" id="btn-to-step-2">
+            Next: Room Dimensions &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= STEP 2: Room Dimensions & Details ================= -->
+      <div class="step-content" id="step-2">
+        <h2 style="font-size: 1.45rem; margin-bottom: 8px;">Step 2: Room Details & Dimensions</h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">
+          Accurate dimensions allow AI to optimize circulation, furniture sizing, and cost forecasting.
+        </p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="room_type">Room Type *</label>
+            <select id="room_type" class="form-select" required>
+              <option value="Living Room">Living Room</option>
+              <option value="Bedroom" selected>Bedroom</option>
+              <option value="Kitchen">Kitchen</option>
+              <option value="Dining Room">Dining Room</option>
+              <option value="Office">Home Office / Study</option>
+              <option value="Bathroom">Bathroom</option>
+              <option value="Other">Other / Balcony</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ceiling_height">Ceiling Height (meters)</label>
+            <input type="number" id="ceiling_height" class="form-control" value="2.9" step="0.1" min="1.8" max="15">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="length_m">Room Length (meters) *</label>
+            <input type="number" id="length_m" class="form-control" value="4.5" step="0.1" min="1" max="50" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="width_m">Room Width (meters) *</label>
+            <input type="number" id="width_m" class="form-control" value="3.5" step="0.1" min="1" max="50" required>
+          </div>
+        </div>
+
+        <!-- Live Area Calculation Banner -->
+        <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <span style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Calculated Floor Area</span>
+            <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; color: var(--accent-sage-dark);" id="live-area-display">
+              15.75 sq.m (approx. 169.5 sq.ft)
+            </div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-align: right;">
+            Formula: Length &times; Width
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="num_doors">Number of Doors</label>
+            <input type="number" id="num_doors" class="form-control" value="1" min="1" max="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="num_windows">Number of Windows</label>
+            <input type="number" id="num_windows" class="form-control" value="2" min="0" max="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="num_occupants">Number of Occupants</label>
+            <input type="number" id="num_occupants" class="form-control" value="2" min="1" max="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="existing_furniture">Existing Furniture (to keep or replace)</label>
+          <input type="text" id="existing_furniture" class="form-control" placeholder="e.g. Queen sized bed, 3-door wardrobe, study desk">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="additional_reqs">Additional Requirements / Spatial Constraints</label>
+          <textarea id="additional_reqs" class="form-control" placeholder="e.g. Need ample storage, focus on warm concealed lighting, child-safe corners..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 32px;">
+          <button type="button" class="btn btn-secondary" id="btn-back-to-step-1">&larr; Back</button>
+          <button type="button" class="btn btn-primary" id="btn-to-step-3">Next: Budget & Style &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ================= STEP 3: Budget & Preferences ================= -->
+      <div class="step-content" id="step-3">
+        <h2 style="font-size: 1.45rem; margin-bottom: 8px;">Step 3: Budget and Style Preferences</h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">
+          Select your target interior design style and investment budget in Indian Rupees (INR).
+        </p>
+
+        <!-- Budget Selection -->
+        <div class="form-group">
+          <label class="form-label">Total Renovation Budget (INR) *</label>
+          <div class="input-group" style="margin-bottom: 12px;">
+            <span class="input-addon">₹</span>
+            <input type="number" id="budget_inr" class="form-control" value="75000" min="5000" step="5000" required>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="setBudget(25000)">₹25,000</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="setBudget(50000)">₹50,000</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="setBudget(75000)">₹75,000</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="setBudget(100000)">₹1,00,000</button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="setBudget(200000)">₹2,00,000+</button>
+          </div>
+        </div>
+
+        <!-- Interior Style Selection Cards -->
+        <div class="form-group" style="margin-top: 28px;">
+          <label class="form-label">Choose Interior Style *</label>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;" id="style-selection-grid">
+            
+            <div class="card style-card selected" data-style="Modern" onclick="selectStyle(this, 'Modern')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Modern</strong>
+            </div>
+
+            <div class="card style-card" data-style="Minimalist" onclick="selectStyle(this, 'Minimalist')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Minimalist</strong>
+            </div>
+
+            <div class="card style-card" data-style="Traditional Indian" onclick="selectStyle(this, 'Traditional Indian')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Traditional Indian</strong>
+            </div>
+
+            <div class="card style-card" data-style="Scandinavian" onclick="selectStyle(this, 'Scandinavian')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Scandinavian</strong>
+            </div>
+
+            <div class="card style-card" data-style="Contemporary" onclick="selectStyle(this, 'Contemporary')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Contemporary</strong>
+            </div>
+
+            <div class="card style-card" data-style="Industrial" onclick="selectStyle(this, 'Industrial')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Industrial</strong>
+            </div>
+
+            <div class="card style-card" data-style="Luxury" onclick="selectStyle(this, 'Luxury')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Luxury</strong>
+            </div>
+
+            <div class="card style-card" data-style="Bohemian" onclick="selectStyle(this, 'Bohemian')" style="padding: 12px; text-align: center;">
+              <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=300&q=80" style="height: 90px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: 8px;">
+              <strong style="font-size: 0.9rem;">Bohemian</strong>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="color_palette">Color Palette</label>
+            <input type="text" id="color_palette" class="form-control" value="Warm Beige, Charcoal & Natural Oak">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="furniture_pref">Furniture / Finish Preferences</label>
+            <input type="text" id="furniture_pref" class="form-control" placeholder="e.g. Modular acrylic, matte laminate, cane accents">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 32px;">
+          <button type="button" class="btn btn-secondary" id="btn-back-to-step-2">&larr; Back</button>
+          <button type="button" class="btn btn-primary" id="btn-to-step-4">Review & Generate &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ================= STEP 4: Review & Generate ================= -->
+      <div class="step-content" id="step-4">
+        <h2 style="font-size: 1.45rem; margin-bottom: 8px;">Step 4: Generate AI Room Transformation</h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">
+          Review your design parameters and request an architectural rendering with cost breakdown.
+        </p>
+
+        <!-- Summary Review Box -->
+        <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 24px; margin-bottom: 28px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Room Type & Area</span>
+              <div style="font-weight: 700; font-size: 1.05rem;" id="rev-room-type">Bedroom (15.75 sq.m)</div>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Selected Style</span>
+              <div style="font-weight: 700; font-size: 1.05rem; color: var(--accent-sage);" id="rev-style">Modern</div>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Target Budget</span>
+              <div style="font-weight: 700; font-size: 1.05rem;" id="rev-budget">₹75,000</div>
+            </div>
+            <div>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Photo Uploaded</span>
+              <div style="font-weight: 700; font-size: 1.05rem;" id="rev-photo">Yes (Attached)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Spinner (when generating) -->
+        <div id="generation-spinner" style="display: none; text-align: center; padding: 40px 20px;">
+          <div style="display: inline-block; width: 48px; height: 48px; border: 4px solid var(--border-light); border-top-color: var(--accent-sage); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px;"></div>
+          <h4 style="font-size: 1.2rem; margin-bottom: 8px;">Generating Your Architectural Transformation...</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem; max-width: 480px; margin: 0 auto;">
+            Analyzing spatial geometry, calculating lighting fixtures, and computing itemized Indian market rates.
+          </p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 32px;" id="generation-action-bar">
+          <button type="button" class="btn btn-secondary" id="btn-back-to-step-3">&larr; Back</button>
+          <button type="button" class="btn btn-primary btn-lg" id="btn-generate-design">
+            ✨ Generate AI Interior Design
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    let selectedFile = null;
+    let selectedStyle = 'Modern';
+
+    // Live Area Calculation
+    function updateArea() {
+      const len = parseFloat(document.getElementById('length_m').value) || 0;
+      const wid = parseFloat(document.getElementById('width_m').value) || 0;
+      const sqM = (len * wid).toFixed(2);
+      const sqFt = (sqM * 10.7639).toFixed(1);
+      document.getElementById('live-area-display').textContent = `${sqM} sq.m (approx. ${sqFt} sq.ft)`;
+    }
+
+    document.getElementById('length_m').addEventListener('input', updateArea);
+    document.getElementById('width_m').addEventListener('input', updateArea);
+
+    // Style Selection
+    function selectStyle(el, style) {
+      document.querySelectorAll('#style-selection-grid .style-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedStyle = style;
+    }
+
+    function setBudget(amount) {
+      document.getElementById('budget_inr').value = amount;
+    }
+
+    // Photo Handling
+    const fileInput = document.getElementById('room-photo-input');
+    const previewBox = document.getElementById('photo-preview-box');
+    const previewImg = document.getElementById('photo-preview-img');
+    const dropzone = document.getElementById('photo-dropzone');
+    const removeBtn = document.getElementById('btn-remove-photo');
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    function handleFile(file) {
+      if (file.size > 10 * 1024 * 1024) {
+        showToast('Image size exceeds 10 MB limit.', 'error');
+        return;
+      }
+      selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        previewImg.src = ev.target.result;
+        previewBox.style.display = 'block';
+        dropzone.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    removeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectedFile = null;
+      fileInput.value = '';
+      previewImg.src = '';
+      previewBox.style.display = 'none';
+      dropzone.style.display = 'block';
+    });
+
+    // Step Navigation
+    function showStep(stepNum) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step-${i}`).classList.remove('active');
+        const node = document.getElementById(`node-${i}`);
+        node.classList.remove('active');
+        if (i < stepNum) {
+          node.classList.add('completed');
+        } else {
+          node.classList.remove('completed');
+        }
+      }
+      document.getElementById(`step-${stepNum}`).classList.add('active');
+      document.getElementById(`node-${stepNum}`).classList.add('active');
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    document.getElementById('btn-to-step-2').addEventListener('click', () => showStep(2));
+    document.getElementById('btn-back-to-step-1').addEventListener('click', () => showStep(1));
+    document.getElementById('btn-to-step-3').addEventListener('click', () => showStep(3));
+    document.getElementById('btn-back-to-step-2').addEventListener('click', () => showStep(2));
+
+    document.getElementById('btn-to-step-4').addEventListener('click', () => {
+      const roomType = document.getElementById('room_type').value;
+      const len = parseFloat(document.getElementById('length_m').value) || 0;
+      const wid = parseFloat(document.getElementById('width_m').value) || 0;
+      const budget = parseFloat(document.getElementById('budget_inr').value) || 75000;
+
+      document.getElementById('rev-room-type').textContent = `${roomType} (${(len * wid).toFixed(2)} sq.m)`;
+      document.getElementById('rev-style').textContent = selectedStyle;
+      document.getElementById('rev-budget').textContent = formatINR(budget);
+      document.getElementById('rev-photo').textContent = selectedFile ? 'Yes (Uploaded)' : 'Default Architecture Preset';
+
+      showStep(4);
+    });
+
+    document.getElementById('btn-back-to-step-3').addEventListener('click', () => showStep(3));
+
+    // Form Submission & AI Generation
+    document.getElementById('btn-generate-design').addEventListener('click', async () => {
+      if (!Auth.requireAuth()) return;
+
+      const spinner = document.getElementById('generation-spinner');
+      const actionBar = document.getElementById('generation-action-bar');
+      spinner.style.display = 'block';
+      actionBar.style.display = 'none';
+
+      try {
+        // Step A: Save Room
+        const roomPayload = {
+          roomType: document.getElementById('room_type').value,
+          lengthM: parseFloat(document.getElementById('length_m').value),
+          widthM: parseFloat(document.getElementById('width_m').value),
+          ceilingHeightM: parseFloat(document.getElementById('ceiling_height').value),
+          existingFurniture: document.getElementById('existing_furniture').value,
+          numberOfDoors: parseInt(document.getElementById('num_doors').value) || 1,
+          numberOfWindows: parseInt(document.getElementById('num_windows').value) || 1,
+          numberOfOccupants: parseInt(document.getElementById('num_occupants').value) || 1,
+          additionalRequirements: document.getElementById('additional_reqs').value
+        };
+
+        const roomRes = await API.post('/rooms', roomPayload);
+        const roomId = roomRes.data.roomId;
+
+        // Step B: Upload Photo if selected
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append('photo', selectedFile);
+          await API.post(`/rooms/${roomId}/photo`, formData);
+        }
+
+        // Step C: Trigger AI Design Generation
+        const designPayload = {
+          roomId: roomId,
+          interiorStyle: selectedStyle,
+          budgetInr: parseFloat(document.getElementById('budget_inr').value) || 75000,
+          colorPalette: document.getElementById('color_palette').value,
+          furniturePreferences: document.getElementById('furniture_pref').value
+        };
+
+        const designRes = await API.post('/designs/generate', designPayload);
+        const designId = designRes.data.designId;
+
+        showToast('Room transformation generated successfully!', 'success');
+        setTimeout(() => {
+          window.location.href = `design-results.html?designId=${designId}`;
+        }, 800);
+
+      } catch (err) {
+        spinner.style.display = 'none';
+        actionBar.style.display = 'flex';
+        showToast(err.message || 'Generation failed. Please try again.', 'error');
+      }
+    });
+
+    // Check query params for preset style or budget
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('style')) {
+        const style = params.get('style');
+        const card = document.querySelector(`[data-style="${style}"]`);
+        if (card) selectStyle(card, style);
+      }
+      if (params.get('budget')) {
+        setBudget(parseInt(params.get('budget')));
+      }
+      updateArea();
+    });
+  </script>
+  <style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</body>
+</html>

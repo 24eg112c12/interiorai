@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renovation Professionals Directory — InteriorAI</title>
+  <meta name="description" content="Find and book verified interior designers, painters, carpenters, electricians, and false-ceiling specialists across Indian metros.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .category-pills {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 30px;
+    }
+    .category-pill {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .category-pill:hover,
+    .category-pill.active {
+      background: var(--accent-sage);
+      color: #FFFFFF;
+      border-color: var(--accent-sage);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link active">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 50px 24px;">
+    <div class="section-header">
+      <span class="section-tag">Trade Network</span>
+      <h1 class="section-title">Home Renovation Professionals</h1>
+      <p class="section-desc">
+        Connect with verified craftsmen, specialized tradesmen, and turnkey interior architects.
+      </p>
+    </div>
+
+    <!-- Search & Location Filters -->
+    <div class="card" style="padding: 20px; margin-bottom: 30px;">
+      <div style="display: grid; grid-template-columns: 2fr 1.5fr auto; gap: 16px; align-items: center;">
+        <div>
+          <input type="text" id="search-query" class="form-control" placeholder="Search by professional name or keywords...">
+        </div>
+        <div>
+          <input type="text" id="search-location" class="form-control" placeholder="City or area (e.g. Bengaluru, Mumbai, Delhi)...">
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary" id="btn-search">
+            🔍 Search
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="category-pills" id="category-pills">
+      <button class="category-pill active" data-cat="all">All Services</button>
+      <button class="category-pill" data-cat="Interior Designer">Interior Designers</button>
+      <button class="category-pill" data-cat="Painter">Painters</button>
+      <button class="category-pill" data-cat="Carpenter">Carpenters</button>
+      <button class="category-pill" data-cat="Electrician">Electricians</button>
+      <button class="category-pill" data-cat="Lighting Specialist">Lighting Specialists</button>
+      <button class="category-pill" data-cat="False-Ceiling Worker">False-Ceiling Workers</button>
+      <button class="category-pill" data-cat="Sofa Maker">Sofa Makers</button>
+      <button class="category-pill" data-cat="Plumber">Plumbers</button>
+    </div>
+
+    <!-- Results Status & Demo Disclaimer -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <span style="font-size: 0.92rem; color: var(--text-muted);" id="results-count-text">
+        Showing verified professionals
+      </span>
+      <span class="badge badge-neutral" style="font-size: 0.75rem;">
+        Demonstration Profiles
+      </span>
+    </div>
+
+    <!-- Professionals Grid -->
+    <div class="prof-grid" id="professionals-grid">
+      <!-- Dynamically populated from API -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" style="display: none; text-align: center; padding: 60px 20px;">
+      <div style="font-size: 3rem; margin-bottom: 12px;">🔍</div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 8px;">No Professionals Found</h3>
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 20px;">
+        Try clearing your search query or selecting "All Services".
+      </p>
+      <button type="button" class="btn btn-secondary" onclick="resetFilters()">Reset Filters</button>
+    </div>
+
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    let activeCategory = 'all';
+
+    async function fetchProfessionals() {
+      const query = document.getElementById('search-query').value.trim();
+      const location = document.getElementById('search-location').value.trim();
+      const grid = document.getElementById('professionals-grid');
+      const emptyBox = document.getElementById('empty-state');
+      const countText = document.getElementById('results-count-text');
+
+      grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px;">Loading verified professionals...</div>';
+
+      try {
+        let endpoint = '/professionals';
+        const params = new URLSearchParams();
+        if (query) params.append('query', query);
+        if (location) params.append('location', location);
+        if (activeCategory && activeCategory !== 'all') params.append('category', activeCategory);
+
+        if (params.toString()) {
+          endpoint = `/professionals/search?${params.toString()}`;
+        }
+
+        const res = await API.get(endpoint);
+        const professionals = res.data || [];
+
+        grid.innerHTML = '';
+        if (professionals.length === 0) {
+          emptyBox.style.display = 'block';
+          countText.textContent = 'Found 0 professionals';
+          return;
+        }
+
+        emptyBox.style.display = 'none';
+        countText.textContent = `Showing ${professionals.length} professional${professionals.length > 1 ? 's' : ''}`;
+
+        professionals.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'prof-card';
+          card.innerHTML = `
+            <div class="prof-header">
+              <img class="prof-avatar" src="${p.portfolioImageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}" alt="${p.name}">
+              <div class="prof-info">
+                <h3 class="prof-name">${p.name}</h3>
+                <span class="prof-type">${p.serviceType}</span>
+              </div>
+            </div>
+
+            <div class="prof-stats">
+              <span class="prof-rating">★ ${p.rating ? p.rating.toFixed(1) : '4.8'} (${p.reviewsCount || 15})</span>
+              <span>•</span>
+              <span>${p.experienceYears || 5}+ yrs exp</span>
+              <span>•</span>
+              <span style="font-weight: 600; color: var(--accent-sage);">${p.hourlyOrBaseRate || 'Standard Rates'}</span>
+            </div>
+
+            <div class="prof-location">
+              📍 <span>${p.location}</span>
+            </div>
+
+            <p class="prof-desc">
+              ${p.description || 'Experienced home renovation craftsman providing guaranteed workmanship.'}
+            </p>
+
+            <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-light);">
+              <a href="professional-details.html?id=${p.professionalId}" class="btn btn-secondary btn-sm" style="flex: 1;">View Profile</a>
+              <a href="professional-details.html?id=${p.professionalId}&action=book" class="btn btn-primary btn-sm" style="flex: 1;">Book Consultation</a>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } catch (err) {
+        grid.innerHTML = `<div style="grid-column: 1 / -1; color: var(--status-danger); text-align: center; padding: 40px;">Failed to load professionals: ${err.message}</div>`;
+      }
+    }
+
+    // Category pill filtering
+    document.querySelectorAll('.category-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-cat');
+        fetchProfessionals();
+      });
+    });
+
+    document.getElementById('btn-search').addEventListener('click', fetchProfessionals);
+    document.getElementById('search-query').addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') fetchProfessionals();
+    });
+    document.getElementById('search-location').addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') fetchProfessionals();
+    });
+
+    function resetFilters() {
+      document.getElementById('search-query').value = '';
+      document.getElementById('search-location').value = '';
+      activeCategory = 'all';
+      document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('.category-pill[data-cat="all"]').classList.add('active');
+      fetchProfessionals();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('category')) {
+        const cat = params.get('category');
+        activeCategory = cat;
+        const pill = document.querySelector(`.category-pill[data-cat="${cat}"]`);
+        if (pill) {
+          document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+          pill.classList.add('active');
+        }
+      }
+      fetchProfessionals();
+    });
+  </script>
+</body>
+</html>

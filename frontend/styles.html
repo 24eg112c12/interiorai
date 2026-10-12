@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interior Styles Catalog — InteriorAI</title>
+  <meta name="description" content="Explore 8 popular interior design movements tailored for Indian living: Modern, Minimalist, Traditional Indian, Scandinavian, and more.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .style-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 40px;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .style-detail-grid.reverse {
+      grid-template-columns: 1fr 1fr;
+    }
+    .style-detail-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+    }
+    .style-detail-body {
+      padding: 36px;
+    }
+    @media (max-width: 900px) {
+      .style-detail-grid, .style-detail-grid.reverse {
+        grid-template-columns: 1fr;
+      }
+      .style-detail-img {
+        height: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link active">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 60px 24px;">
+    <div class="section-header">
+      <span class="section-tag">Aesthetic Lexicon</span>
+      <h1 class="section-title">Explore Interior Design Styles</h1>
+      <p class="section-desc">
+        Discover architectural nuances, color palettes, and finish materials to choose the right aesthetic for your home makeover.
+      </p>
+    </div>
+
+    <!-- 1. Modern -->
+    <div class="style-detail-grid">
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Modern Interior Style">
+      <div class="style-detail-body">
+        <span class="section-tag">Crisp & Timeless</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Modern</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Born from early 20th-century functionalism, Modern interior design prioritizes clean geometric lines, clutter-free layouts, and honest materials. It uses muted monochromatic foundations accented by warm brass or black steel hardware.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Flat panel cabinetry, flush doors, recessed architectural spotlights, neutral warm gray and beige hues.</span>
+        </div>
+        <a href="design.html?style=Modern" class="btn btn-primary">Design in Modern Style &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 2. Minimalist -->
+    <div class="style-detail-grid reverse">
+      <div class="style-detail-body">
+        <span class="section-tag">Clarity & Restraint</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Minimalist</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Focuses on "less is more." Spaces are characterized by open floor plans, abundant natural daylight, hidden storage cabinetry, and carefully curated furniture pieces where every object serves a distinct functional purpose.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Concealed handleless wardrobes, pure white/off-white lime wash walls, light oak timbers, zero visual clutter.</span>
+        </div>
+        <a href="design.html?style=Minimalist" class="btn btn-primary">Design in Minimalist Style &rarr;</a>
+      </div>
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80" alt="Minimalist Interior Style">
+    </div>
+
+    <!-- 3. Traditional Indian -->
+    <div class="style-detail-grid">
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80" alt="Traditional Indian Interior Style">
+      <div class="style-detail-body">
+        <span class="section-tag">Heritage & Craft</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Traditional Indian</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Celebrates rich Indian heritage with hand-carved Teakwood or Sheesham furniture, antique brass accents, ornamental jali partition screens, vibrant silk/cotton tapestries, and serene pooja mandirs crafted with traditional joinery.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Terracotta tones, turmeric yellow, antique brass diyas, fluted wooden pilasters, intricate jhula swings.</span>
+        </div>
+        <a href="design.html?style=Traditional Indian" class="btn btn-primary">Design in Traditional Indian Style &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 4. Scandinavian -->
+    <div class="style-detail-grid reverse">
+      <div class="style-detail-body">
+        <span class="section-tag">Warmth & Nordic Simplicity</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Scandinavian</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Blends Nordic coziness (hygge) with bright illumination. Light natural birch and oak woods, plush bouclé textures, comfortable rounded chairs, and indoor flora create an inviting, refreshing domestic sanctuary.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Pastel accents, textured woolen throws, tapered wooden furniture legs, paper lantern pendants.</span>
+        </div>
+        <a href="design.html?style=Scandinavian" class="btn btn-primary">Design in Scandinavian Style &rarr;</a>
+      </div>
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="Scandinavian Interior Style">
+    </div>
+
+    <!-- 5. Contemporary -->
+    <div class="style-detail-grid">
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" alt="Contemporary Interior Style">
+      <div class="style-detail-body">
+        <span class="section-tag">Fluid & Forward-Looking</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Contemporary</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Current, in-the-moment design marked by organic curved sofas, ribbed fluted panels, statement monolithic coffee tables, and layered ambient lighting with warm linear LED profiles.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Curved architectural alcoves, micro-cement finishes, bronze tinted mirrors, sculptural lighting pendants.</span>
+        </div>
+        <a href="design.html?style=Contemporary" class="btn btn-primary">Design in Contemporary Style &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 6. Industrial -->
+    <div class="style-detail-grid reverse">
+      <div class="style-detail-body">
+        <span class="section-tag">Raw & Authentic</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Industrial</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Draws inspiration from urban loft architecture. Features exposed clay brickwork, matte black iron shelving, distressed leather seating, concrete flooring, and Edison filament bulb luminaires.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Exposed ducting, rustic reclaimed timber, steel mesh dividers, dark charcoal and terracotta color tones.</span>
+        </div>
+        <a href="design.html?style=Industrial" class="btn btn-primary">Design in Industrial Style &rarr;</a>
+      </div>
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80" alt="Industrial Interior Style">
+    </div>
+
+    <!-- 7. Luxury -->
+    <div class="style-detail-grid">
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" alt="Luxury Interior Style">
+      <div class="style-detail-body">
+        <span class="section-tag">Opulent & Sophisticated</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Luxury</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Exquisite high-end interiors featuring book-matched Italian marble, high-gloss PU lacquered surfaces, brushed champagne gold metal trim, plush velvet sectionals, and crystal chandeliers.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Statuary marble, recessed cove gold leafing, custom acoustic fabric wall cladding, automated ambient controls.</span>
+        </div>
+        <a href="design.html?style=Luxury" class="btn btn-primary">Design in Luxury Style &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 8. Bohemian -->
+    <div class="style-detail-grid reverse">
+      <div class="style-detail-body">
+        <span class="section-tag">Free-Spirited & Organic</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Bohemian</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+          Unconventional and eclectic. Layers handmade rattan furniture, woven jute rugs, macramé wall tapestries, brass accents, and vibrant botanical greenery for a deeply personal, lived-in sanctuary.
+        </p>
+        <div style="margin-bottom: 24px;">
+          <strong style="font-size: 0.85rem; color: var(--text-main); display: block; margin-bottom: 6px;">Key Characteristics:</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Cane furniture, leafy fiddle leaf figs, Turkish kilims, floor poufs, warm terracotta and moss green shades.</span>
+        </div>
+        <a href="design.html?style=Bohemian" class="btn btn-primary">Design in Bohemian Style &rarr;</a>
+      </div>
+      <img class="style-detail-img" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80" alt="Bohemian Interior Style">
+    </div>
+
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+</body>
+</html>

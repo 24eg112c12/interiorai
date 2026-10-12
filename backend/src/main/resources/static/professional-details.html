@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Profile & Consultation — InteriorAI</title>
+  <meta name="description" content="View verified interior design professional profile, reviews, and submit a renovation consultation booking request.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Styles</a></li>
+          <li><a href="professionals.html" class="nav-link active">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects">My Projects</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 50px 24px; max-width: 1000px;">
+    <a href="professionals.html" style="font-size: 0.88rem; color: var(--accent-sage); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px;">
+      &larr; Back to Professional Directory
+    </a>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: flex-start;">
+      
+      <!-- Left Column: Profile Card & Bio -->
+      <div>
+        <div class="card" style="padding: 36px; margin-bottom: 24px;">
+          <div style="display: flex; gap: 24px; align-items: center; margin-bottom: 24px;">
+            <img id="prof-avatar" src="" alt="Professional Avatar" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border-light);">
+            <div>
+              <span class="badge badge-info" id="prof-type-badge" style="margin-bottom: 6px;">Interior Designer</span>
+              <h1 style="font-size: 1.7rem; margin-bottom: 4px;" id="prof-name">Loading...</h1>
+              <div style="font-size: 0.9rem; color: var(--text-muted);" id="prof-location">📍 Loading location...</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 18px 0; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); margin-bottom: 24px;">
+            <div>
+              <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase;">Rating</span>
+              <div style="font-size: 1.15rem; font-weight: 700; color: #E68A00;" id="prof-rating">★ 4.9</div>
+            </div>
+            <div>
+              <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase;">Experience</span>
+              <div style="font-size: 1.15rem; font-weight: 700;" id="prof-exp">8 Years</div>
+            </div>
+            <div>
+              <span style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase;">Base Rate</span>
+              <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-sage);" id="prof-rate">Standard</div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.2rem; margin-bottom: 10px;">About & Specialization</h3>
+          <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; margin-bottom: 24px;" id="prof-bio">
+            Loading background...
+          </p>
+
+          <h3 style="font-size: 1.2rem; margin-bottom: 10px;">Contact & Verification</h3>
+          <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; font-size: 0.9rem;">
+            <div style="margin-bottom: 8px;"><strong>📞 Mobile:</strong> <span id="prof-mobile">+91 98XXX XXXXX</span></div>
+            <div><strong>✉️ Email:</strong> <span id="prof-email">contact@interiorai.demo</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Booking Request Form -->
+      <div>
+        <div class="card" style="padding: 36px; position: sticky; top: 100px;">
+          <span class="section-tag">Direct Scheduling</span>
+          <h2 style="font-size: 1.4rem; margin-bottom: 8px;">Book Consultation</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
+            Submit your required service date and requirements. The professional will confirm availability.
+          </p>
+
+          <form id="booking-form">
+            <div class="form-group">
+              <label class="form-label" for="booking_date">Requested Date *</label>
+              <input type="date" id="booking_date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="booking_project">Link to Renovation Project (Optional)</label>
+              <select id="booking_project" class="form-select">
+                <option value="">-- No project selected / General consultation --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="booking_message">Project Scope & Notes</label>
+              <textarea id="booking_message" class="form-control" placeholder="Describe what you need help with (e.g. 2BHK wall paint, modular kitchen woodwork, cove lighting plan)..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-booking">
+              Submit Booking Request
+            </button>
+          </form>
+
+          <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 14px;">
+            🔒 Safe booking via InteriorAI platform. You can cancel pending bookings anytime.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer" style="padding: 24px 0;">
+    <div class="container" style="text-align: center; font-size: 0.82rem; color: #798089;">
+      &copy; 2026 InteriorAI Technologies India. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    let professionalId = null;
+
+    async function loadProfessional() {
+      const params = new URLSearchParams(window.location.search);
+      professionalId = params.get('id');
+
+      if (!professionalId) {
+        showToast('Invalid professional ID.', 'error');
+        setTimeout(() => window.location.href = 'professionals.html', 1000);
+        return;
+      }
+
+      // Set min date to tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      document.getElementById('booking_date').min = tomorrow.toISOString().split('T')[0];
+      document.getElementById('booking_date').value = tomorrow.toISOString().split('T')[0];
+
+      try {
+        const res = await API.get(`/professionals/${professionalId}`);
+        const p = res.data;
+
+        document.getElementById('prof-name').textContent = p.name;
+        document.getElementById('prof-type-badge').textContent = p.serviceType;
+        document.getElementById('prof-location').textContent = '📍 ' + p.location;
+        document.getElementById('prof-rating').textContent = `★ ${p.rating ? p.rating.toFixed(1) : '4.8'} (${p.reviewsCount || 12})`;
+        document.getElementById('prof-exp').textContent = `${p.experienceYears || 5} Years`;
+        document.getElementById('prof-rate').textContent = p.hourlyOrBaseRate || 'Standard Rates';
+        document.getElementById('prof-bio').textContent = p.description || 'Experienced craftsman offering reliable quality.';
+        document.getElementById('prof-mobile').textContent = p.mobile || 'Contact provided on booking';
+        document.getElementById('prof-email').textContent = p.email || 'support@interiorai.demo';
+
+        document.getElementById('prof-avatar').src = p.portfolioImageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
+
+        // Load user's projects into select dropdown if logged in
+        if (Auth.isLoggedIn()) {
+          loadUserProjects();
+        }
+
+      } catch (err) {
+        showToast(err.message || 'Could not load professional profile.', 'error');
+      }
+    }
+
+    async function loadUserProjects() {
+      try {
+        const res = await API.get('/projects');
+        const projects = res.data || [];
+        const select = document.getElementById('booking_project');
+        projects.forEach(proj => {
+          const opt = document.createElement('option');
+          opt.value = proj.projectId;
+          opt.textContent = `${proj.projectName} (${proj.status})`;
+          select.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Could not load projects for booking dropdown:', err);
+      }
+    }
+
+    document.getElementById('booking-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!Auth.requireAuth()) return;
+
+      const submitBtn = document.getElementById('btn-submit-booking');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting Request...';
+
+      const bookingDate = document.getElementById('booking_date').value;
+      const projectId = document.getElementById('booking_project').value;
+      const message = document.getElementById('booking_message').value.trim();
+
+      try {
+        const payload = {
+          professionalId: parseInt(professionalId),
+          bookingDate: bookingDate,
+          projectId: projectId ? parseInt(projectId) : null,
+          message: message
+        };
+
+        const res = await API.post('/bookings', payload);
+        showToast('Booking request submitted successfully!', 'success');
+        setTimeout(() => {
+          window.location.href = 'bookings.html';
+        }, 800);
+      } catch (err) {
+        showToast(err.message || 'Booking submission failed.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Booking Request';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProfessional();
+    });
+  </script>
+</body>
+</html>

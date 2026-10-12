@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InteriorAI — Upload. Set Your Budget. See Your Room Transformed.</title>
+  <meta name="description" content="Design your dream space with AI, get an estimated cost in Indian rupees, and find verified professionals to bring your renovation to life.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" id="nav-brand">
+        <span>Interior<span style="color: var(--accent-sage);">AI</span></span>
+        <span class="brand-badge">India</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active">Home</a></li>
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="design.html" class="nav-link">AI Design</a></li>
+          <li><a href="styles.html" class="nav-link">Explore Styles</a></li>
+          <li><a href="professionals.html" class="nav-link">Professionals</a></li>
+          <li><a href="my-projects.html" class="nav-link" id="nav-my-projects" style="display: none;">My Projects</a></li>
+          <li><a href="bookings.html" class="nav-link" id="nav-bookings" style="display: none;">Bookings</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions">
+        <a href="login.html" class="btn btn-secondary btn-sm" id="btn-nav-login">Log In</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="btn-nav-register">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-tagline">
+          <span>✨ AI-Powered Architectural Renovation</span>
+        </div>
+        <h1 class="hero-title">
+          Upload. Set Your Budget. See Your Room <span class="highlight">Transformed</span>.
+        </h1>
+        <p class="hero-subtitle">
+          Design your dream space with AI, get an estimated cost, and find professionals who can bring your design to life.
+        </p>
+        <div class="hero-actions">
+          <a href="design.html" class="btn btn-primary btn-lg" id="hero-btn-start">Start Designing</a>
+          <a href="styles.html" class="btn btn-secondary btn-lg" id="hero-btn-explore">Explore Designs</a>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric-item">
+            <span class="metric-num">8+</span>
+            <span class="metric-label">Curated Interior Styles</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-num">₹25K+</span>
+            <span class="metric-label">Tailored Budget Options</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-num">100%</span>
+            <span class="metric-label">Personalized Space Estimates</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Before & After Transformation Slider Preview -->
+      <div class="hero-visual">
+        <div class="before-after-card" id="hero-ba-slider">
+          <div class="ba-slider-container">
+            <!-- After transformed room image -->
+            <img class="ba-img-after" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Transformed Modern Living Room">
+            <!-- Before room image wrapper -->
+            <div class="ba-img-before-wrapper">
+              <img class="ba-img-before" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80" alt="Original Unfurnished Room">
+            </div>
+            <!-- Slider handle -->
+            <div class="ba-handle">
+              <div class="ba-handle-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+            <span class="ba-badge ba-badge-before">Original Room</span>
+            <span class="ba-badge ba-badge-after">AI Transformed</span>
+          </div>
+        </div>
+        <p style="text-align: center; font-size: 0.82rem; color: var(--text-muted); margin-top: 10px;">
+          ↔ Drag the slider to preview AI transformation in real-time
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section section-alt" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Workflow</span>
+        <h2 class="section-title">How InteriorAI Works</h2>
+        <p class="section-desc">From an empty room photo to a turnkey living space in five simple steps.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3 class="step-title">Upload Your Room</h3>
+          <p class="step-text">Snap or upload a photo of your existing bedroom, living room, kitchen, or home office.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3 class="step-title">Enter Dimensions</h3>
+          <p class="step-text">Provide length, width, and ceiling height. Our engine calculates carpet area instantly.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3 class="step-title">Set Your Budget</h3>
+          <p class="step-text">Define your budget in Indian Rupees (INR) and select your preferred color palette.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3 class="step-title">Generate AI Designs</h3>
+          <p class="step-text">Receive photorealistic design concepts with itemized cost breakdowns and savings advice.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">5</div>
+          <h3 class="step-title">Find Professionals</h3>
+          <p class="step-text">Connect with verified painters, carpenters, and interior designers to start renovating.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Interior Design Highlight -->
+  <section class="section">
+    <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;">
+      <div>
+        <span class="section-tag">AI Technology</span>
+        <h2 class="section-title">Smart Redesign Powered by Generative Vision</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 1.05rem;">
+          InteriorAI blends generative design models with spatial dimension calculations. It recognizes your room geometry, preserves door and window positions, and creates realistic lighting and material textures tailored to Indian living conditions.
+        </p>
+        <ul style="list-style: none; margin-bottom: 30px;">
+          <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <span style="color: var(--accent-sage); font-weight: 800;">✓</span> Respects room scale, door clearances, and natural light sources
+          </li>
+          <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <span style="color: var(--accent-sage); font-weight: 800;">✓</span> Custom color palettes tailored to Indian apartments & villas
+          </li>
+          <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <span style="color: var(--accent-sage); font-weight: 800;">✓</span> Realistic Indian rupee material & labor cost estimation
+          </li>
+        </ul>
+        <a href="design.html" class="btn btn-primary btn-lg" id="cta-design-now">Try AI Room Redesign</a>
+      </div>
+      <div>
+        <div style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light);">
+          <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80" alt="Contemporary Room Interior">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Budget-Based Designs Section -->
+  <section class="section section-alt" id="budget-tiers">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Tailored Cost Estimates</span>
+        <h2 class="section-title">Designs That Respect Your Budget</h2>
+        <p class="section-desc">
+          Quality interiors shouldn't be unpredictable. Explore representative budget tiers calibrated for Indian metro and Tier-2 renovations.
+        </p>
+      </div>
+
+      <div class="budget-tiers-grid">
+        <!-- Tier 1 -->
+        <div class="budget-tier-card">
+          <div class="tier-amount">₹25,000</div>
+          <div class="tier-label">Quick Refresh & Styling</div>
+          <ul class="tier-features">
+            <li>Fresh premium wall emulsion on accent wall</li>
+            <li>Ambient warm lighting & bedside lamps</li>
+            <li>Coordinated curtains & decorative textiles</li>
+            <li>Indoor planters, wall art & minor touch-ups</li>
+          </ul>
+          <a href="design.html?budget=25000" class="btn btn-secondary btn-sm btn-block">Design for ₹25,000</a>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="budget-tier-card featured">
+          <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-sage); color: white; font-size: 0.72rem; font-weight: 800; padding: 2px 10px; border-radius: var(--radius-full); text-transform: uppercase;">
+            Most Popular
+          </div>
+          <div class="tier-amount">₹50,000</div>
+          <div class="tier-label">Moderate Makeover</div>
+          <ul class="tier-features">
+            <li>Two-tone royal emulsion wall paint</li>
+            <li>Modular wardrobe shutters / TV back panel</li>
+            <li>Architectural track lights & smart dimmers</li>
+            <li>Custom curtains, area rug & wall shelving</li>
+          </ul>
+          <a href="design.html?budget=50000" class="btn btn-primary btn-sm btn-block">Design for ₹50,000</a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="budget-tier-card">
+          <div class="tier-amount">₹1,00,000</div>
+          <div class="tier-label">Complete Room Transformation</div>
+          <ul class="tier-features">
+            <li>Saint-Gobain false ceiling with LED cove lights</li>
+            <li>Full modular wardrobe with laminate finish</li>
+            <li>Texture paint or fluted charcoal wall accents</li>
+            <li>Custom headboard & integrated electrical points</li>
+          </ul>
+          <a href="design.html?budget=100000" class="btn btn-secondary btn-sm btn-block">Design for ₹1,00,000</a>
+        </div>
+
+        <!-- Tier 4 -->
+        <div class="budget-tier-card">
+          <div class="tier-amount">₹2,00,000+</div>
+          <div class="tier-label">Luxury Turnkey Interior</div>
+          <ul class="tier-features">
+            <li>Designer POP rafters & magnetic track lighting</li>
+            <li>Bespoke solid wood / PU finish cabinetry</li>
+            <li>Italian stucco marble wall effects & acoustic panelling</li>
+            <li>Premium velvet upholstery & designer fixtures</li>
+          </ul>
+          <a href="design.html?budget=200000" class="btn btn-secondary btn-sm btn-block">Design Luxury Space</a>
+        </div>
+      </div>
+
+      <p style="text-align: center; font-size: 0.84rem; color: var(--text-muted); margin-top: 30px;">
+        * Notice: Figures above are illustrative architectural benchmarks. Actual market costs depend on exact room dimensions, material grades, hardware, and location.
+      </p>
+    </div>
+  </section>
+
+  <!-- Popular Interior Styles -->
+  <section class="section" id="popular-styles">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Aesthetic Directions</span>
+        <h2 class="section-title">Popular Interior Styles</h2>
+        <p class="section-desc">Select an interior movement to inspire your next room overhaul.</p>
+      </div>
+
+      <div class="styles-grid">
+        <div class="style-card" onclick="window.location.href='design.html?style=Modern'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="Modern">
+          <div class="style-card-body">
+            <h3 class="style-name">Modern</h3>
+            <p class="style-desc">Clean architectural lines, neutral backdrops, and functional understated elegance.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #E8E5DF;"></span>
+              <span class="palette-swatch" style="background: #2E3338;"></span>
+              <span class="palette-swatch" style="background: #D4AF37;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Minimalist'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80" alt="Minimalist">
+          <div class="style-card-body">
+            <h3 class="style-name">Minimalist</h3>
+            <p class="style-desc">Decluttered serenity, intentional negative space, and organic natural light.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #FDFBF7;"></span>
+              <span class="palette-swatch" style="background: #C4BBB0;"></span>
+              <span class="palette-swatch" style="background: #8C8275;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Traditional Indian'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80" alt="Traditional Indian">
+          <div class="style-card-body">
+            <h3 class="style-name">Traditional Indian</h3>
+            <p class="style-desc">Carved teak woodwork, brass hardware, warm terracotta tones, and artisanal textiles.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #C85A32;"></span>
+              <span class="palette-swatch" style="background: #D4AF37;"></span>
+              <span class="palette-swatch" style="background: #5B2C1D;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Scandinavian'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80" alt="Scandinavian">
+          <div class="style-card-body">
+            <h3 class="style-name">Scandinavian</h3>
+            <p class="style-desc">Blonde oak woods, cozy textures (hygge), soft pastels, and generous illumination.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #F4EBE1;"></span>
+              <span class="palette-swatch" style="background: #C5D3CE;"></span>
+              <span class="palette-swatch" style="background: #D3A287;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Contemporary'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80" alt="Contemporary">
+          <div class="style-card-body">
+            <h3 class="style-name">Contemporary</h3>
+            <p class="style-desc">Fluid curved silhouettes, high-contrast textures, and statement designer lighting.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #25282A;"></span>
+              <span class="palette-swatch" style="background: #EAE6DF;"></span>
+              <span class="palette-swatch" style="background: #9D7A54;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Industrial'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" alt="Industrial">
+          <div class="style-card-body">
+            <h3 class="style-name">Industrial</h3>
+            <p class="style-desc">Exposed brickwork, matte black metal framing, raw timber, and loft aesthetics.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #3B3F45;"></span>
+              <span class="palette-swatch" style="background: #8F593E;"></span>
+              <span class="palette-swatch" style="background: #9EA5AD;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Luxury'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80" alt="Luxury">
+          <div class="style-card-body">
+            <h3 class="style-name">Luxury</h3>
+            <p class="style-desc">Italian marble finishes, plush velvets, champagne gold accents, and grand chandeliers.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #D4AF37;"></span>
+              <span class="palette-swatch" style="background: #1C2024;"></span>
+              <span class="palette-swatch" style="background: #EFEBE4;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="style-card" onclick="window.location.href='design.html?style=Bohemian'">
+          <img class="style-card-img" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80" alt="Bohemian">
+          <div class="style-card-body">
+            <h3 class="style-name">Bohemian</h3>
+            <p class="style-desc">Macramé accents, lush tropical greenery, rattan cane furniture, and vibrant kilims.</p>
+            <div class="style-palette">
+              <span class="palette-swatch" style="background: #E8985E;"></span>
+              <span class="palette-swatch" style="background: #5B7553;"></span>
+              <span class="palette-swatch" style="background: #EADDC8;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="styles.html" class="btn btn-secondary">Browse All 8 Styles in Detail →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explore Professionals -->
+  <section class="section section-alt" id="professionals">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Skilled Trade Directory</span>
+        <h2 class="section-title">Verified Renovation Professionals</h2>
+        <p class="section-desc">Connect with specialized tradesmen across 8 essential home renovation categories.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px;">
+        <a href="professionals.html?category=Interior Designer" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">📐</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Interior Designers</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Consultation & Turnkey</span>
+        </a>
+
+        <a href="professionals.html?category=Painter" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🎨</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Painters</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Royal Emulsion & Texture</span>
+        </a>
+
+        <a href="professionals.html?category=Carpenter" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🪚</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Carpenters</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Modular Wardrobes & Beds</span>
+        </a>
+
+        <a href="professionals.html?category=Electrician" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">⚡</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Electricians</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Wiring & Automation</span>
+        </a>
+
+        <a href="professionals.html?category=Lighting Specialist" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">💡</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Lighting Specialists</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Cove & Magnetic Profiles</span>
+        </a>
+
+        <a href="professionals.html?category=False-Ceiling Worker" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🏗️</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">False-Ceiling Workers</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Gyproc & POP Mouldings</span>
+        </a>
+
+        <a href="professionals.html?category=Sofa Maker" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🛋️</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Sofa Makers</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Custom Sectionals & Upholstery</span>
+        </a>
+
+        <a href="professionals.html?category=Plumber" class="card" style="text-align: center; text-decoration: none;">
+          <div style="font-size: 2rem; margin-bottom: 8px;">🔧</div>
+          <h4 style="color: var(--text-main); font-size: 1.05rem;">Plumbers</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Sanitary Fittings & Remodeling</span>
+        </a>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="professionals.html" class="btn btn-primary btn-lg">View All Verified Professionals</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Homeowner Stories</span>
+        <h2 class="section-title">What Our Early Users Say</h2>
+        <p class="section-desc">Sample demonstration testimonials highlighting the AI renovation workflow.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div class="card">
+          <div style="color: #E68A00; margin-bottom: 12px; font-size: 1.1rem;">★★★★★</div>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+            "We were renovating our 3BHK living room in Indiranagar. InteriorAI calculated our room area and gave us a ₹75,000 budget breakdown. We booked Suresh for lighting and the room looks exactly like the AI preview!"
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--accent-sage-light); color: var(--accent-sage); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+              RS
+            </div>
+            <div>
+              <h5 style="font-size: 0.95rem; font-weight: 700;">Rohit & Shweta</h5>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Bengaluru, Karnataka (Demonstration Story)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="color: #E68A00; margin-bottom: 12px; font-size: 1.1rem;">★★★★★</div>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+            "The cost-saving recommendations were a lifesaver. When our budget was tight, it suggested engineered laminates instead of solid teak and peripheral cove ceiling. Saved us almost ₹40,000 on our master bedroom."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--accent-gold-light); color: var(--accent-terracotta); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+              AK
+            </div>
+            <div>
+              <h5 style="font-size: 0.95rem; font-weight: 700;">Ananya Kulkarni</h5>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Pune, Maharashtra (Demonstration Story)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="color: #E68A00; margin-bottom: 12px; font-size: 1.1rem;">★★★★★</div>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">
+            "Being able to drag the before-and-after slider helped us visualize the space before paying for carpentry. Managing the project milestones through the dashboard kept our contractor accountable."
+          </p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--bg-secondary); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+              VM
+            </div>
+            <div>
+              <h5 style="font-size: 0.95rem; font-weight: 700;">Vivek Menon</h5>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Delhi-NCR (Demonstration Story)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="text-align: center; font-size: 0.78rem; color: var(--text-light); margin-top: 24px;">
+        * Note: These reviews represent demonstration profiles provided for local testing and illustration purposes.
+      </p>
+    </div>
+  </section>
+
+  <!-- Final Call to Action -->
+  <section class="section section-alt" style="text-align: center; padding: 100px 0;">
+    <div class="container" style="max-width: 720px;">
+      <span class="section-tag">Get Started Today</span>
+      <h2 style="font-size: 2.8rem; margin-bottom: 18px;">Your Dream Room Starts Here.</h2>
+      <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 34px;">
+        Upload your room photograph now, configure your budget, and watch AI transform your space in seconds.
+      </p>
+      <a href="design.html" class="btn btn-primary btn-lg" id="final-cta-btn">Start Designing</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">Interior<span style="color: var(--accent-sage);">AI</span></div>
+          <p class="footer-desc">
+            Empowering homeowners and designers across India with generative spatial design, transparent cost forecasting, and verified tradesmen.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Platform</h4>
+          <ul class="footer-links">
+            <li><a href="design.html">AI Room Redesign</a></li>
+            <li><a href="styles.html">Explore 8 Styles</a></li>
+            <li><a href="#budget-tiers">Budget Calculators</a></li>
+            <li><a href="professionals.html">Professional Directory</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Services</h4>
+          <ul class="footer-links">
+            <li><a href="professionals.html?category=Interior Designer">Interior Designers</a></li>
+            <li><a href="professionals.html?category=Painter">Wall Painting & Textures</a></li>
+            <li><a href="professionals.html?category=Carpenter">Modular Woodwork</a></li>
+            <li><a href="professionals.html?category=False-Ceiling Worker">POP False Ceilings</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#how-it-works">About InteriorAI</a></li>
+            <li><a href="professionals.html">Contact Professionals</a></li>
+            <li><a href="dashboard.html">User Dashboard</a></li>
+            <li><a href="profile.html">Privacy & Terms</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 InteriorAI Technologies India. All rights reserved.</div>
+        <div>Engineered with Java 17, Spring Boot, MySQL & Generative AI</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sliderEl = document.getElementById('hero-ba-slider');
+      if (sliderEl) {
+        initBeforeAfterSlider(sliderEl);
+      }
+    });
+  </script>
+</body>
+</html>
